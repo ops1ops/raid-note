@@ -1,0 +1,15 @@
+.input {
+  width: 256px;
+  height: 24px;
+}
+
+.container {
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+}
+
+.timeline {
+  display: flex;
+  gap: 8px;
+}
