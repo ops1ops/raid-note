@@ -9,11 +9,43 @@
   flex-direction: column;
 }
 
-.timeline {
+.casts-sequence {
   display: flex;
+  position: relative;
+  height: 30px;
   gap: 8px;
+
+  &__container {
+    overflow-x: auto;
+  }
+
+  &__cast {
+    position: absolute;
+  }
 }
 
 .ability-icon {
   box-shadow: 0 0 3px #000;
+}
+
+.time-line {
+  display: flex;
+  gap: 32px;
+  height: 50px;
+  max-width: 100%;
+
+  &__element {
+    position: relative;
+  }
+
+  &__time {
+    position: absolute;
+    left: -10px;
+    bottom: 0;
+  }
+}
+
+body {
+  //background: #161513;
+  //color: #f3eded;
 }

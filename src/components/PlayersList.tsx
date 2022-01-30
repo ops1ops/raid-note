@@ -1,6 +1,9 @@
-import { PlayerDetails } from "../types/playerDetails";
+import { FC } from 'react';
 
-const PlayersList = ({ playersDetails }: any) => {
+import { PlayerDetails } from '../types/playerDetails';
+import { FightPlayerDetails } from '../graphql/queries/fightPlayerDetails';
+
+const PlayersList: FC<{ playersDetails?: FightPlayerDetails }> = ({ playersDetails }) => {
   if (!playersDetails) {
     return null;
   }
@@ -12,12 +15,12 @@ const PlayersList = ({ playersDetails }: any) => {
   return (
     <div>
       {formattedPlayers.map(({ name, id, icon }, index) => (
-        <div>
+        <div key={id}>
           {index + 1}. | {id} | {icon} | {name}
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
 export default PlayersList;

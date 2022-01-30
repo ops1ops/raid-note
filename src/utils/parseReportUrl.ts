@@ -1,5 +1,5 @@
-const parseKeyValuePairs = (value: string): Record<string, string> => {
-  const normalizedValue = value.replace(/[#?]/, '')
+const parseKeyValuePairs = (string: string): Record<string, string> => {
+  const normalizedValue = string.replace(/[#?]/, '');
   const pairs = normalizedValue.split('&');
 
   return pairs.reduce((accumulator, pair) => {
@@ -8,8 +8,8 @@ const parseKeyValuePairs = (value: string): Record<string, string> => {
     return {
       ...accumulator,
       [key]: value,
-    }
-  }, {})
+    };
+  }, {});
 };
 
 const REPORT_CODE_POSITION_IN_PATHNAME = 1;
@@ -21,5 +21,5 @@ export const parseReportUrl = (url: string) => {
   const code = paths[REPORT_CODE_POSITION_IN_PATHNAME];
   const { fight } = parseKeyValuePairs(hash);
 
-  return { fightId: fight, code };
-}
+  return { fightId: Number(fight), code };
+};

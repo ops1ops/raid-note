@@ -7,4 +7,17 @@ export enum PriestSpells {
   SpiritShell = 109964,
   Schism = 214621,
   Penance = 47540,
+  Rapture = 47536,
+  Evangelism = 246287,
+  MindGames = 323673,
+  Shadowfiend = 34433,
 }
+
+export const PRIEST_SAFE_CDS = [
+  PriestSpells.SpiritShell,
+  PriestSpells.Shadowfiend,
+  PriestSpells.Rapture,
+  PriestSpells.Evangelism,
+  PriestSpells.PowerWordRadiance,
+  PriestSpells.MindGames,
+];

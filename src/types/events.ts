@@ -1,5 +1,5 @@
 import { Ability } from './ability';
-import {Source} from "./source";
+import { Source } from './source';
 
 export enum EventTypes {
   Cast = 'cast',
@@ -22,5 +22,3 @@ export interface FullEvent extends BaseEvent {
   ability: Ability;
   source: Source;
 }
-
-

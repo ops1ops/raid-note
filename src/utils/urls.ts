@@ -8,5 +8,4 @@ export const getIconUrl = (icon: string): string => {
 
 const WOW_HEAD_SPELL_URL = 'https://www.wowhead.com/spell';
 
-export const getWowHeadUrl = (spellId: number) => `${WOW_HEAD_SPELL_URL}=${spellId}`;
-
+export const getWowHeadSpellUrl = (spellId: number) => `${WOW_HEAD_SPELL_URL}=${spellId}`;

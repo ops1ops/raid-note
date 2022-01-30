@@ -9,5 +9,5 @@ export interface Source {
   id: number;
   name: string;
   server: string;
-  type: SourceTypes
+  type: SourceTypes;
 }

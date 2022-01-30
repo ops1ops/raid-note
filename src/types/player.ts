@@ -1,4 +1,4 @@
-import { Spec } from "./spec";
+import { Spec } from './spec';
 
 export interface Player {
   guid: number;
@@ -8,5 +8,5 @@ export interface Player {
   minItemLevel: number;
   name: string;
   server: string;
-  specs: Spec[]
+  specs: Spec[];
 }
