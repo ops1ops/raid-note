@@ -1,5 +1,6 @@
 export enum SourceTypes {
   Paladin = 'Paladin',
+  Priest = 'Priest',
 }
 
 export interface Source {

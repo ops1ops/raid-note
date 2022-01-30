@@ -30,16 +30,13 @@ const PLAYERS_DETAILS = gql`
   query PlayersDataInFight($startTime: Float!, $endTime: Float!, $fightId: Int!, $code: String!) {
     reportData {
       report(code: $code) {
-        events(fightIDs: [$fightId], startTime: $startTime, endTime: $endTime, dataType: Casts, useAbilityIDs: false, useActorIDs: true, limit: 1000) {
-          data
-        }
         playerDetails(fightIDs: [$fightId], startTime: $startTime, endTime: $endTime)
       }
     }
   }
 `
 
-const DEFAULT_REPORT_LINK = 'https://www.warcraftlogs.com/reports/WMv4Jz92HK3Z8raD#fight=30&type=healing';
+const DEFAULT_REPORT_LINK = 'https://www.warcraftlogs.com/reports/WMv4Jz92HK3Z8raD#fight=5&type=damage-done&view=timeline';
 
 const playerDetailsToPlayers = ({ tanks, healers, dps }: PlayerDetails) => [...tanks, ...healers, ...dps];
 

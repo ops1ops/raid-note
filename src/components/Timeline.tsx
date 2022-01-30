@@ -3,6 +3,7 @@ import {getIconUrl, getWowHeadUrl} from "../utils/render";
 import {gql, useQuery} from "@apollo/client";
 import {PaladinSpells} from "../spells/paladin";
 import { SourceTypes } from "../types/source";
+import {PriestSpells} from "../spells/priest";
 
 const PLAYER_EVENTS = gql`
   query PlayerEvents($startTime: Float!, $endTime: Float!, $fightId: Int!, $code: String!, $playerId: Int!) {
@@ -17,24 +18,38 @@ const PLAYER_EVENTS = gql`
   }
 `
 
-const IMPORTANT_SPELLS = {
-  [SourceTypes.Paladin]: [PaladinSpells.AuraMastery, PaladinSpells.AshenHallow, PaladinSpells.AvengingWrath]
+const SPELLS_TO_SHOW = {
+  [SourceTypes.Paladin]: [PaladinSpells.AuraMastery, PaladinSpells.AshenHallow, PaladinSpells.AvengingWrath],
+  [SourceTypes.Priest]: [
+    PriestSpells.PowerWordShield,
+    PriestSpells.PowerWordRadiance,
+    PriestSpells.PowerWordSolace,
+    PriestSpells.BoonOfTheAscended,
+    PriestSpells.AscendedBlast,
+    PriestSpells.SpiritShell,
+    PriestSpells.Schism,
+    PriestSpells.Penance,
+  ],
 } as const;
 
 const Timeline = ({ playerId, fightId, code, startTime, endTime }: any) => {
   const { data } = useQuery(PLAYER_EVENTS, { variables: { playerId, fightId, code, startTime, endTime } });
+  const fightDurationMs = endTime - startTime;
+  const fightDurationS = fightDurationMs / 1000;
+  const fightDurationM = `${Math.floor(fightDurationS / 60)}:${Math.floor(fightDurationS % 60)}`;
 
   const events: FullEvent[] = data?.reportData.report.events.data || [];
 
   console.log(events)
   return (
     <div>
-      Timeline goes here:
+      <span>Timeline | Duration: {fightDurationM} m | {fightDurationS} s </span>
       <div className="timeline">
-        {events.map(({ ability: { abilityIcon, name, guid, type: abilityType}, source: { type }, type: eventType }) => {
-          const importantSpells = IMPORTANT_SPELLS[type];
-
-          if (eventType !== EventTypes.Cast || (importantSpells && !importantSpells.includes(guid))) {
+        {events.map(({ ability: { abilityIcon, name, guid}, source: { type }, type: eventType }) => {
+          const spellsToShow = SPELLS_TO_SHOW[type];
+          console.log(SPELLS_TO_SHOW)
+          // @ts-ignore
+          if (eventType !== EventTypes.Cast || (spellsToShow && !spellsToShow.includes(guid))) {
             return null;
           }
 
@@ -42,7 +57,7 @@ const Timeline = ({ playerId, fightId, code, startTime, endTime }: any) => {
 
           return (
             <a target="_blank" rel="noreferrer" href={getWowHeadUrl(guid)}>
-              <img src={iconUrl} alt={name} width={24} height={24} title={eventType} />
+              <img className="ability-icon" src={iconUrl} alt={name} width={24} height={24} />
             </a>
           )
         })}

@@ -1,8 +1,10 @@
-const ICONS_SOURCE_DIRECTORY_URL = 'https://render.worldofwarcraft.com/us/icons/56';
-const DEFAULT_ICON_NAME = 'creatureportrait_illidancrystal01.jpg';
+const ICONS_SOURCE_DIRECTORY_URL = 'https://render.worldofwarcraft.com/eu/icons/56';
 
-export const getIconUrl = (icon: string = DEFAULT_ICON_NAME): string =>
-  `${ICONS_SOURCE_DIRECTORY_URL}/${icon}`;
+export const getIconUrl = (icon: string): string => {
+  const formattedIcon = icon.replaceAll('-', '');
+
+  return `${ICONS_SOURCE_DIRECTORY_URL}/${formattedIcon}`;
+};
 
 const WOW_HEAD_SPELL_URL = 'https://www.wowhead.com/spell';
 
