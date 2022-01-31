@@ -34,7 +34,9 @@ const App = () => {
 
   const { fightId, code } = parseReportUrl(reportLink);
 
-  const handleClick = async () => {
+  const fetchReport = async () => {
+    setSelectedPlayers([]);
+
     const { data } = await getReportFight({ variables: { fightId, code } });
     const [{ startTime, endTime }] = data?.reportData.report.fights || [];
 
@@ -60,7 +62,9 @@ const App = () => {
     ? playerDetailsToSelectOptions(playersDetails.reportData.report.playerDetails.data.playerDetails)
     : [];
 
-  const [{ startTime, endTime }] = reportFightData?.reportData.report.fights || [{ startTime: 0, endTime: 0 }];
+  const [{ startTime, endTime, name }] = reportFightData?.reportData.report.fights || [
+    { startTime: 0, endTime: 0, name: '' },
+  ];
   const { seconds } = getFightDuration(startTime, endTime, DurationUnits.Seconds);
 
   return (
@@ -69,9 +73,10 @@ const App = () => {
         {reportLink}
       </a>
       <input className="input" placeholder="link report" value={reportLink} onChange={handleInputChange} />
-      <button type="button" onClick={handleClick}>
+      <button type="button" onClick={fetchReport}>
         Get report data
       </button>
+      <span>{name}</span>
       <span>
         Fight Duration:
         {secondsToMinutesText(seconds)} m

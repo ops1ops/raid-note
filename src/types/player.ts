@@ -1,4 +1,5 @@
 import { Spec } from './spec';
+import { SourceTypes } from './source';
 
 export interface Player {
   guid: number;
@@ -9,4 +10,5 @@ export interface Player {
   name: string;
   server: string;
   specs: Spec[];
+  type: SourceTypes;
 }

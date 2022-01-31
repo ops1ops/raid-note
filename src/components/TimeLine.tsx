@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { secondsToMinutes } from '../utils/formatters';
+import { secondsToMinutesText } from '../utils/formatters';
 
 interface TimeLine {
   /**
@@ -16,8 +16,7 @@ const TimeLine: FC<TimeLine> = ({ stepInterval, stepsAmount }) => (
       .fill(0)
       .map((_value, index) => {
         const intervalTime = stepInterval * index;
-        const { minutes, seconds } = secondsToMinutes(intervalTime);
-        const formattedTime = `${minutes}:${seconds}`;
+        const formattedTime = secondsToMinutesText(intervalTime);
 
         return (
           <div key={formattedTime} className="time-line__element">

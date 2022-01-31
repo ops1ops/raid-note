@@ -7,11 +7,7 @@ export const REPORT_FIGHT = gql`
     reportData {
       report(code: $code) {
         fights(fightIDs: [$fightId]) {
-          averageItemLevel
-          encounterID
-          friendlyPlayers
           name
-          id
           endTime
           startTime
         }
@@ -23,10 +19,7 @@ export const REPORT_FIGHT = gql`
 export interface ReportFight {
   reportData: {
     report: {
-      fights: Pick<
-        Fight,
-        'averageItemLevel' | 'encounterID' | 'friendlyPlayers' | 'name' | 'id' | 'endTime' | 'startTime'
-      >[];
+      fights: Pick<Fight, 'endTime' | 'startTime' | 'name'>[];
     };
   };
 }
