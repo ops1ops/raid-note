@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 import { FullEvent } from '../../types/events';
 
-export const PLAYER_EVENTS = gql`
+export const PLAYER_EVENTS_CASTS = gql`
   query PlayerEvents($startTime: Float!, $endTime: Float!, $fightId: Int!, $code: String!, $playerId: Int!) {
     reportData {
       report(code: $code) {
@@ -24,7 +24,7 @@ export const PLAYER_EVENTS = gql`
   }
 `;
 
-export interface PlayerEvents {
+export interface PlayerEventsCasts {
   reportData: {
     report: {
       events: {

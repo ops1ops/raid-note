@@ -1,6 +1,6 @@
 import { useLazyQuery } from '@apollo/client';
 import { ChangeEvent, useState } from 'react';
-import Select, {MultiValue} from 'react-select';
+import Select, { MultiValue } from 'react-select';
 
 import PlayersList from './components/PlayersList';
 import { parseReportUrl } from './utils/parseReportUrl';
