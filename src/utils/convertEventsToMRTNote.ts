@@ -21,7 +21,7 @@ const getEventsWithoutTimeDuplicates = (events: PlayerCastData[]) => {
   return Array.from(timePlayerCastMap.values());
 };
 
-const normalizeEvents = (events: FullEvent[], startTime: number) => {
+export const normalizeEvents = (events: FullEvent[], startTime: number) => {
   const formattedEvents: PlayerCastData[] = events.map(({ timestamp, source: { type, name }, ability: { guid } }) => {
     const time = secondsToMinutesText((timestamp - startTime) / 1000);
 
@@ -36,11 +36,5 @@ const normalizeEvents = (events: FullEvent[], startTime: number) => {
   return getEventsWithoutTimeDuplicates(formattedEvents);
 };
 
-export const convertEventsToMRTNote = (events: FullEvent[], startTime: number) => {
-  const normalizedEvents = normalizeEvents(events, startTime);
-
-  return normalizedEvents.reduce(
-    (accumulator, playerCast) => accumulator + MRTNoteTemplater.getRow(playerCast.time, [playerCast]),
-    '',
-  );
-};
+export const convertEventsToMRTNote = (events: PlayerCastData[]) =>
+  events.reduce((accumulator, playerCast) => accumulator + MRTNoteTemplater.getRow(playerCast.time, [playerCast]), '');

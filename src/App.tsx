@@ -89,6 +89,7 @@ const App = () => {
             key={value}
             playerId={value}
             fightId={fightId}
+            bossName={name}
             code={code}
             startTime={startTime}
             endTime={endTime}

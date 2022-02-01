@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { FC } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 
 import { EventTypes } from '../types/events';
 import TimeLine from './TimeLine';
@@ -11,10 +11,11 @@ import { convertEventsToMRTNote } from '../utils/convertEventsToMRTNote';
 import { SourceTypes } from '../types/source';
 import { PALADIN_SAFE_CDS } from '../spells/paladin';
 import { PRIEST_SAFE_CDS } from '../spells/priest';
+import { analyzeDiscPriest } from '../analyzers/priest';
 
 const LINE_WIDTH = 3.21;
 const TIME_LINE_STEP_WIDTH = 32 + LINE_WIDTH;
-const STEP_INTERVAL = 5;
+const STEP_INTERVAL = 0.5;
 
 const SPELLS_TO_SHOW = {
   [SourceTypes.Paladin]: PALADIN_SAFE_CDS,
@@ -37,9 +38,13 @@ interface CastsSequence {
   code: string;
   startTime: number;
   endTime: number;
+  bossName: string;
 }
 
-const CastsSequence: FC<CastsSequence> = ({ playerId, fightId, code, startTime, endTime }) => {
+const DEFAULT_NAME = 'Ильюхаа';
+
+const CastsSequence: FC<CastsSequence> = ({ playerId, fightId, code, startTime, endTime, bossName }) => {
+  const [name, setName] = useState(DEFAULT_NAME);
   const { data, loading } = useQuery<PlayerEventsCasts>(PLAYER_EVENTS_CASTS, {
     variables: {
       playerId,
@@ -70,7 +75,12 @@ const CastsSequence: FC<CastsSequence> = ({ playerId, fightId, code, startTime, 
   const wholeTimeLineDuration = stepsAmount * STEP_INTERVAL;
   const wholeTimeLineWidth = TIME_LINE_STEP_WIDTH * stepsAmount;
 
-  const note = convertEventsToMRTNote(filteredEvents, startTime);
+  const handleInputChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => setName(value);
+
+  const analyzedEvents = analyzeDiscPriest(filteredEvents, startTime);
+  const eventsWithNeededName = analyzedEvents.map((event) => ({ ...event, name }));
+
+  const note = `${bossName}\n${convertEventsToMRTNote(eventsWithNeededName)}`;
 
   return (
     <>
@@ -88,6 +98,7 @@ const CastsSequence: FC<CastsSequence> = ({ playerId, fightId, code, startTime, 
           ))}
         </div>
       </div>
+      <input onChange={handleInputChange} value={name} />
       <ResultText title="MRT Note" text={note} />
     </>
   );

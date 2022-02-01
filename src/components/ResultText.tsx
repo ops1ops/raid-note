@@ -7,7 +7,7 @@ interface ResultText {
 
 const ResultText: FC<ResultText> = ({ text, title }) => (
   <div>
-    <span>{title}</span>
+    <p>{title}</p>
     <p style={{ whiteSpace: 'pre-line' }}>{text}</p>
   </div>
 );

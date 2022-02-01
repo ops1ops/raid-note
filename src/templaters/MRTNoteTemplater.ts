@@ -5,6 +5,7 @@ export interface PlayerCastData {
   type: SourceTypes;
   time: string;
   spells: number[];
+  text?: string;
   name: string;
 }
 
@@ -27,7 +28,9 @@ const MRTNoteTemplater = {
   },
 
   getSeveralSpells(spells: number[]) {
-    return spells.reduce((accumulator, spellId) => `${accumulator} ${MRTNoteTemplater.getSpell(spellId)}`, '');
+    const convertedSpells = spells.map((spellId) => this.getSpell(spellId));
+
+    return convertedSpells.join(' ');
   },
 
   getPlayerName(name: string, type: SourceTypes) {
@@ -37,11 +40,20 @@ const MRTNoteTemplater = {
   },
 
   getRow(time: string, players: PlayerCastData[]) {
-    const playersCasts = players.reduce((accumulator, { spells, name, type }, index) => {
+    const playersCasts = players.reduce((accumulator, { spells, name, type, text }, index) => {
       const isLastCast = players.length - 1 === index;
-      const playersSeparator = isLastCast ? '' : ' |';
+      const playersSeparator = isLastCast ? '' : '|';
+      const textToShow = text || '';
 
-      return `${accumulator} ${this.getPlayerName(name, type)} ${this.getSeveralSpells(spells)}${playersSeparator}`;
+      const elements = [
+        accumulator,
+        this.getPlayerName(name, type),
+        textToShow,
+        this.getSeveralSpells(spells),
+        playersSeparator,
+      ].filter(Boolean);
+
+      return elements.join(' ');
     }, '');
 
     return `${this.getTime(time)} - ${playersCasts}\n`;
