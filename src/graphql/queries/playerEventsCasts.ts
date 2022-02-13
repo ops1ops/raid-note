@@ -13,7 +13,7 @@ export const PLAYER_EVENTS_CASTS = gql`
           endTime: $endTime
           dataType: Casts
           useAbilityIDs: false
-          useActorIDs: true
+          useActorIDs: false
           limit: 10000
         ) {
           data

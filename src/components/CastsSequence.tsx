@@ -15,7 +15,7 @@ import { analyzeDiscPriest } from '../analyzers/priest';
 
 const LINE_WIDTH = 3.21;
 const TIME_LINE_STEP_WIDTH = 32 + LINE_WIDTH;
-const STEP_INTERVAL = 0.5;
+const STEP_INTERVAL = Number(process.env.REACT_APP_STEP_INTERVAL) || 1;
 
 const SPELLS_TO_SHOW = {
   [SourceTypes.Paladin]: PALADIN_SAFE_CDS,
