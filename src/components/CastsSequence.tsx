@@ -41,7 +41,7 @@ interface CastsSequence {
   bossName: string;
 }
 
-const DEFAULT_NAME = 'Ильюхаа';
+const DEFAULT_NAME = '';
 
 const CastsSequence: FC<CastsSequence> = ({ playerId, fightId, code, startTime, endTime, bossName }) => {
   const [name, setName] = useState(DEFAULT_NAME);
@@ -83,24 +83,22 @@ const CastsSequence: FC<CastsSequence> = ({ playerId, fightId, code, startTime, 
   const note = `${bossName}\n${convertEventsToMRTNote(eventsWithNeededName)}`;
 
   return (
-    <>
-      <div className="container casts-sequence__container">
-        <TimeLine stepsAmount={stepsAmount} stepInterval={STEP_INTERVAL} />
-        <div className="casts-sequence">
-          {filteredEvents.map((event) => (
-            <Cast
-              key={`${event.ability.guid}${event.timestamp}${event.ability.type}`}
-              event={event}
-              startTime={startTime}
-              timeLineWidth={wholeTimeLineWidth}
-              timeLineDuration={wholeTimeLineDuration}
-            />
-          ))}
-        </div>
+    <div className="container player-casts">
+      <TimeLine stepsAmount={stepsAmount} stepInterval={STEP_INTERVAL} />
+      <div className="casts-sequence">
+        {filteredEvents.map((event) => (
+          <Cast
+            key={`${event.ability.guid}${event.timestamp}${event.ability.type}`}
+            event={event}
+            startTime={startTime}
+            timeLineWidth={wholeTimeLineWidth}
+            timeLineDuration={wholeTimeLineDuration}
+          />
+        ))}
       </div>
       <input onChange={handleInputChange} value={name} />
       <ResultText title="MRT Note" text={note} />
-    </>
+    </div>
   );
 };
 

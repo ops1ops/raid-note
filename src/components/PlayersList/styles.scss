@@ -1,0 +1,24 @@
+.players-list {
+  top: 8px;
+  position: sticky;
+  align-self: flex-start;
+  max-width: 320px;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  padding: 16px;
+  background-color: #101010;
+  color: #a0a0a0;
+  user-select: none;
+
+  //background-color: #141414;
+  //background-color: rgb(0,38,80);
+  //background-color: #001520;
+
+  &__item {
+    cursor: pointer;
+
+    &--selected {
+      color: #fff;
+    }
+  }
+}
