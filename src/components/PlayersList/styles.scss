@@ -15,10 +15,26 @@
   //background-color: #001520;
 
   &__item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     cursor: pointer;
+
+    &:hover {
+      color: #fff;
+    }
 
     &--selected {
       color: #fff;
     }
+  }
+
+  &__class {
+    font-size: 12px;
+  }
+
+  &__position {
+    text-align: end;
+    width: 20px;
   }
 }

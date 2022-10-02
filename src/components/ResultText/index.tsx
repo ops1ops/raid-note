@@ -1,15 +1,17 @@
 import { FC } from 'react';
 
+import './styles.scss';
+
 interface ResultText {
   title: string;
   text: string;
 }
 
 const ResultText: FC<ResultText> = ({ text, title }) => (
-  <div>
-    <p>{title}</p>
+  <details className="result-text">
+    <summary>{title}</summary>
     <p style={{ whiteSpace: 'pre-line' }}>{text}</p>
-  </div>
+  </details>
 );
 
 export default ResultText;

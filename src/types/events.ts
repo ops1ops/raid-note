@@ -21,4 +21,5 @@ export interface CompactEvent extends BaseEvent {
 export interface FullEvent extends BaseEvent {
   ability: Ability;
   source: Source;
+  target: Source;
 }

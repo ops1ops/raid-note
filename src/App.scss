@@ -1,3 +1,5 @@
+@import "./normalize";
+
 .input {
   width: 256px;
   height: 24px;
@@ -16,6 +18,36 @@
   flex: 1;
 }
 
+header {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.abilities-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.filter-button {
+  display: flex;
+  opacity: 0.3;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  overflow: hidden;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &--active {
+    opacity: 1;
+    border-color: #fff;
+  }
+}
+
 .player-casts {
   box-sizing: border-box;
   border-radius: 4px;
@@ -30,12 +62,19 @@
 .casts-sequence {
   display: flex;
   position: relative;
-  height: 30px;
+  height: 120px;
   gap: 8px;
+  overflow-x: auto;
 
   &__cast {
+    top: 65px;
     position: absolute;
   }
+}
+
+.fight-info {
+  display: flex;
+  gap: 8px;
 }
 
 .ability-icon {

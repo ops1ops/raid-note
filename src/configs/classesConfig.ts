@@ -1,4 +1,4 @@
-import { SourceTypes } from './types/source';
+import { SourceTypes } from '../types/source';
 
 export const CLASSES_CONFIG = {
   [SourceTypes.DeathKnight]: {

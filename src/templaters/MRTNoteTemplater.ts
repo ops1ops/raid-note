@@ -1,5 +1,5 @@
 import { SourceTypes } from '../types/source';
-import { CLASSES_CONFIG } from '../classesConfig';
+import { CLASSES_CONFIG } from '../configs/classesConfig';
 
 export interface PlayerCastData {
   type: SourceTypes;

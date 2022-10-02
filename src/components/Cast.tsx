@@ -2,7 +2,6 @@ import { FC } from 'react';
 
 import { FullEvent } from '../types/events';
 import { getIconUrl, getWowHeadSpellUrl } from '../utils/urls';
-import { secondsToMinutesText } from '../utils/formatters';
 
 interface Cast {
   event: FullEvent;
@@ -24,8 +23,7 @@ const Cast: FC<Cast> = ({
 
   const castedAt = (timestamp - startTime) / 1000;
   const castPosition = (castedAt / timeLineDuration) * timeLineWidth;
-  const minutesText = secondsToMinutesText(castedAt);
-  const castedAtInDifferentFormats = `${minutesText} | ${castedAt}`;
+  const castTitle = castedAt.toString();
 
   return (
     <a
@@ -35,14 +33,7 @@ const Cast: FC<Cast> = ({
       className="casts-sequence__cast"
       style={{ left: `${castPosition}px` }}
     >
-      <img
-        className="ability-icon"
-        src={iconUrl}
-        alt={name}
-        width={24}
-        height={24}
-        title={castedAtInDifferentFormats}
-      />
+      <img className="ability-icon" src={iconUrl} alt={name} width={24} height={24} title={castTitle} />
     </a>
   );
 };
