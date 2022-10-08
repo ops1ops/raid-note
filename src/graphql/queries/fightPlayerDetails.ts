@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-import { PlayerDetails } from '../../types/playerDetails';
+import { PlayerDetails } from '../../types/player';
 
 export const FIGHT_PLAYER_DETAILS = gql`
   query PlayerDetailsInFight($startTime: Float!, $endTime: Float!, $fightId: Int!, $code: String!) {

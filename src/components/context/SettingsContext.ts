@@ -12,7 +12,7 @@ interface SettingsContextType {
 
 export const DEFAULT_SETTINGS: Settings = {
   isSmartAnalyzing: false,
-  isSpellsPresetEnabled: false,
+  isSpellsPresetEnabled: true,
 };
 
 const defaultContext = {

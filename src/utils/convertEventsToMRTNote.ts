@@ -28,7 +28,7 @@ export const normalizeEvents = (events: FullEvent[], startTime: number) => {
     return {
       time,
       type,
-      name,
+      sourceName: name,
       spells: [guid],
     };
   });
@@ -36,5 +36,11 @@ export const normalizeEvents = (events: FullEvent[], startTime: number) => {
   return getEventsWithoutTimeDuplicates(formattedEvents);
 };
 
-export const convertEventsToMRTNote = (events: PlayerCastData[]) =>
-  events.reduce((accumulator, playerCast) => accumulator + MRTNoteTemplater.getRow(playerCast.time, [playerCast]), '');
+export const convertEventsToMRTNote = (bossName: string, events: PlayerCastData[]) => {
+  const noteText = events.reduce(
+    (accumulator, playerCast) => accumulator + MRTNoteTemplater.getRow(playerCast.time, [playerCast]),
+    '',
+  );
+
+  return `${bossName}\n${noteText}`;
+};

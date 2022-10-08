@@ -14,7 +14,7 @@ export enum PriestSpells {
   Shadowfiend = 34433,
 }
 
-export const PRIEST_SAFE_CDS = [
+export const PRIEST_MAJOR_SPELLS = [
   PriestSpells.PowerWordShield,
   PriestSpells.Schism,
   PriestSpells.ShadowMend,

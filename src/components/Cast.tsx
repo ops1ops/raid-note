@@ -1,7 +1,8 @@
 import { FC } from 'react';
 
 import { FullEvent } from '../types/events';
-import { getIconUrl, getWowHeadSpellUrl } from '../utils/urls';
+import { getWowHeadSpellUrl } from '../utils/urls';
+import AbilityIcon from './AbilityIcon';
 
 interface Cast {
   event: FullEvent;
@@ -12,15 +13,13 @@ interface Cast {
 
 const Cast: FC<Cast> = ({
   event: {
-    ability: { abilityIcon, name, guid },
+    ability: { abilityIcon, guid },
     timestamp,
   },
   startTime,
   timeLineDuration,
   timeLineWidth,
 }) => {
-  const iconUrl = getIconUrl(abilityIcon);
-
   const castedAt = (timestamp - startTime) / 1000;
   const castPosition = (castedAt / timeLineDuration) * timeLineWidth;
   const castTitle = castedAt.toString();
@@ -33,7 +32,7 @@ const Cast: FC<Cast> = ({
       className="casts-sequence__cast"
       style={{ left: `${castPosition}px` }}
     >
-      <img className="ability-icon" src={iconUrl} alt={name} width={24} height={24} title={castTitle} />
+      <AbilityIcon icon={abilityIcon} name={castTitle} />
     </a>
   );
 };

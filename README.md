@@ -1,4 +1,4 @@
-# warcraftlogs-parser
+# raid-note
 
 ## How to create token
 

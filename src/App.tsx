@@ -81,7 +81,7 @@ const App = () => {
               <div className="fight-info">
                 <span>{name}</span>
                 <span>|</span>
-                <span>Fight Duration: {secondsToMinutesText(seconds)} m</span>
+                <span>Fight duration: {secondsToMinutesText(seconds)} m</span>
               </div>
             )}
           </div>

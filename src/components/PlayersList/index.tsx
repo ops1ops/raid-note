@@ -1,10 +1,9 @@
 import { FC } from 'react';
 import classNames from 'classnames';
 
-import { PlayerDetails } from '../../types/playerDetails';
 import { FightPlayerDetails } from '../../graphql/queries/fightPlayerDetails';
 import './styles.scss';
-import { Player } from '../../types/player';
+import { Player, PlayerDetails } from '../../types/player';
 
 interface PlayersListProps {
   selectedPlayers: Player[];
@@ -28,7 +27,8 @@ const PlayersList: FC<PlayersListProps> = ({ playersDetails, onClick, selectedPl
   return (
     <div className="players-list">
       {formattedPlayers.map((player, index) => {
-        const { name, id, icon } = player;
+        const { name, id, icon, type } = player;
+        const isPlayerSelected = selectedPlayers.find(({ id: playerId }) => playerId === id);
 
         return (
           <div
@@ -36,11 +36,11 @@ const PlayersList: FC<PlayersListProps> = ({ playersDetails, onClick, selectedPl
             key={id}
             onClick={createClickHandler(player)}
             className={classNames('players-list__item', {
-              'players-list__item--selected': selectedPlayers.find(({ id: playerId }) => playerId === id),
+              'players-list__item--selected': isPlayerSelected,
             })}
           >
             <span className="players-list__position">{index + 1}.</span>
-            {name}
+            <span className={type}>{name}</span>
             <span className="players-list__class">({icon})</span>
           </div>
         );

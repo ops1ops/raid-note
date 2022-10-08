@@ -6,7 +6,7 @@ export interface PlayerCastData {
   time: string;
   spells: number[];
   text?: string;
-  name: string;
+  sourceName: string;
 }
 
 /**
@@ -27,7 +27,7 @@ const MRTNoteTemplater = {
     return `{spell:${spellId}}`;
   },
 
-  getSeveralSpells(spells: number[]) {
+  getSpells(spells: number[]) {
     const convertedSpells = spells.map((spellId) => this.getSpell(spellId));
 
     return convertedSpells.join(' ');
@@ -39,24 +39,24 @@ const MRTNoteTemplater = {
     return `${this.getColoredText(color, name)}`;
   },
 
-  getRow(time: string, players: PlayerCastData[]) {
-    const playersCasts = players.reduce((accumulator, { spells, name, type, text }, index) => {
+  getRow(minutesText: string, players: PlayerCastData[]) {
+    const playersCasts = players.reduce((accumulator, { spells, sourceName, type, text }, index) => {
       const isLastCast = players.length - 1 === index;
       const playersSeparator = isLastCast ? '' : '|';
       const textToShow = text || '';
 
       const elements = [
         accumulator,
-        this.getPlayerName(name, type),
+        this.getPlayerName(sourceName, type),
         textToShow,
-        this.getSeveralSpells(spells),
+        this.getSpells(spells),
         playersSeparator,
       ].filter(Boolean);
 
       return elements.join(' ');
     }, '');
 
-    return `${this.getTime(time)} - ${playersCasts}\n`;
+    return `${this.getTime(minutesText)} - ${playersCasts}\n`;
   },
 };
 

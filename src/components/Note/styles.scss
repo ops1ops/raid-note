@@ -1,0 +1,14 @@
+.note {
+  input {
+    margin-bottom: 16px;
+  }
+
+  details {
+    max-height: 400px;
+    overflow: auto;
+  }
+
+  p {
+    white-space: pre-line;
+  }
+}

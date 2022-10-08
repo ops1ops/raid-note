@@ -12,3 +12,5 @@ export interface Player {
   specs: Spec[];
   type: SourceTypes;
 }
+
+export type PlayerDetails = Record<'dps' | 'healers' | 'tanks', Player[]>;

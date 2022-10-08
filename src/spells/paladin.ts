@@ -6,7 +6,7 @@ export enum PaladinSpells {
   BlessingOfSacrifice = 6940,
 }
 
-export const PALADIN_SAFE_CDS = [
+export const PALADIN_MAJOR_SPELLS = [
   PaladinSpells.AuraMastery,
   PaladinSpells.AshenHallow,
   PaladinSpells.AvengingWrath,

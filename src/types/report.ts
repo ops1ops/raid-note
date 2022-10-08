@@ -1,6 +1,6 @@
 import { Fight } from './fight';
 import { FullEvent } from './events';
-import { PlayerDetails } from './playerDetails';
+import { PlayerDetails } from './player';
 
 export interface Report {
   fight: Fight;
