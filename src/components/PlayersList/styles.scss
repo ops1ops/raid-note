@@ -1,8 +1,18 @@
-.players-list {
+.players-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   top: 8px;
   position: sticky;
   align-self: flex-start;
-  max-width: 320px;
+  max-width: 400px;
+
+  .button {
+    width: 100%;
+  }
+}
+
+.players-list {
   border: 1px solid #fff;
   border-radius: 4px;
   padding: 16px;

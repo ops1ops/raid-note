@@ -2,50 +2,46 @@ import { useQuery } from '@apollo/client';
 import { FC, useContext, useEffect, useMemo, useState } from 'react';
 import classNames from 'classnames';
 
-import { EventTypes } from '../../types/events';
+import { EventTypes, FullEvent } from '../../types/events';
 import TimeLine from '../TimeLine';
 import { DurationUnits, getFightDuration } from '../../utils/getFightDuration';
 import Cast from '../Cast';
-import { PLAYER_EVENTS_CASTS, PlayerEventsCasts } from '../../graphql/queries/playerEventsCasts';
+import { getPlayersEventsCastsQuery, PlayersEventsCasts } from '../../graphql/queries/playersEventsCasts';
 import Note from '../Note';
 import { SourceTypes } from '../../types/source';
 import AbilityIcon from '../AbilityIcon';
 import { SettingsContext } from '../context/SettingsContext';
 import { getUniqAbilities } from '../../utils/abilities';
 import { SPELLS_PRESETS } from './constants';
+import { Player } from '../../types/player';
+import CastsSequence from './CastsSequence';
+import './styles.scss';
 
 const LINE_WIDTH = 4.16;
 const GAP = 32;
 const TIME_LINE_STEP_WIDTH = GAP + LINE_WIDTH;
 const STEP_INTERVAL = Number(process.env.REACT_APP_STEP_INTERVAL) || 1;
 
-interface CastsSequenceProps {
-  playerId: number;
+interface CastsProps {
+  players: Player[];
   fightId: number;
-  sourceType: SourceTypes;
   code: string;
   startTime: number;
   endTime: number;
   bossName: string;
 }
 
-const CastsSequence: FC<CastsSequenceProps> = ({
-  playerId,
-  fightId,
-  code,
-  startTime,
-  endTime,
-  bossName,
-  sourceType,
-}) => {
+const Casts: FC<CastsProps> = ({ players, fightId, code, startTime, endTime, bossName }) => {
   const [selectedAbilities, setSelectedAbilities] = useState<number[]>([]);
   const {
     settings: { isSpellsPresetEnabled },
   } = useContext(SettingsContext);
 
-  const { data, loading } = useQuery<PlayerEventsCasts>(PLAYER_EVENTS_CASTS, {
+  const playersId = players.map(({ id }) => id);
+  const playersEventsCastsQuery = getPlayersEventsCastsQuery(playersId);
+
+  const { data = {}, loading } = useQuery<PlayersEventsCasts>(playersEventsCastsQuery, {
     variables: {
-      playerId,
       fightId,
       code,
       startTime,
@@ -53,8 +49,12 @@ const CastsSequence: FC<CastsSequenceProps> = ({
     },
   });
 
-  const events = data?.reportData.report.events.data || [];
-  const spellsPresets = SPELLS_PRESETS[sourceType] || [];
+  const playersReports = Object.values(data);
+  const events = playersReports.reduce<FullEvent[]>(
+    (accumulator, reportData) => [...accumulator, ...reportData.report.events.data],
+    [],
+  );
+  const spellsPresets = SPELLS_PRESETS[SourceTypes.Priest] || [];
 
   const filteredEvents = events.filter(({ ability: { guid }, type: eventType }) => {
     const isCastEvent = eventType === EventTypes.Cast;
@@ -70,10 +70,10 @@ const CastsSequence: FC<CastsSequenceProps> = ({
     } else {
       setSelectedAbilities((prevAbilities) => prevAbilities.filter((id) => !spellsPresets.includes(id)));
     }
-  }, [isSpellsPresetEnabled]);
+  }, [isSpellsPresetEnabled, spellsPresets]);
 
   if (loading) {
-    return <span>Loading player casts...</span>;
+    return <span>Loading players casts...</span>;
   }
 
   const { seconds } = getFightDuration(startTime, endTime, DurationUnits.Seconds);
@@ -87,7 +87,11 @@ const CastsSequence: FC<CastsSequenceProps> = ({
       const existingIdIndex = prevAbilities.indexOf(newId);
 
       if (existingIdIndex > -1) {
-        return prevAbilities.filter((id) => id !== newId);
+        const newAbilities = [...prevAbilities];
+
+        newAbilities.splice(existingIdIndex, 1);
+
+        return newAbilities;
       }
 
       return [...prevAbilities, newId];
@@ -95,7 +99,7 @@ const CastsSequence: FC<CastsSequenceProps> = ({
   };
 
   return (
-    <div className="container player-casts">
+    <div className="container casts">
       <div className="abilities-filter">
         {abilities.map(({ guid, name: abilityName, abilityIcon }) => (
           <button
@@ -108,25 +112,21 @@ const CastsSequence: FC<CastsSequenceProps> = ({
           </button>
         ))}
       </div>
-      <div className="casts-sequence">
+      <div className="casts-sequences">
         <TimeLine stepsAmount={stepsAmount} stepInterval={STEP_INTERVAL} />
-        {filteredEvents.map((event) => {
-          if (!selectedAbilities.includes(event.ability.guid)) return null;
-
-          return (
-            <Cast
-              key={`${event.ability.guid}-${event.source.guid}-${event.target.guid}-${event.timestamp}`}
-              event={event}
-              startTime={startTime}
-              timeLineWidth={wholeTimeLineWidth}
-              timeLineDuration={wholeTimeLineDuration}
-            />
-          );
-        })}
+        {Object.entries(data).map(([key, reportData]) => (
+          <CastsSequence
+            key={key}
+            events={reportData.report.events.data}
+            timeLineDuration={wholeTimeLineDuration}
+            timeLineWidth={wholeTimeLineWidth}
+            startTime={startTime}
+          />
+        ))}
       </div>
       <Note startTime={startTime} bossName={bossName} events={filteredEvents} />
     </div>
   );
 };
 
-export default CastsSequence;
+export default Casts;

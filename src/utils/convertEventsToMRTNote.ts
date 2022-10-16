@@ -1,44 +1,65 @@
 import { FullEvent } from '../types/events';
-import MRTNoteTemplater, { PlayerCastData } from '../templaters/MRTNoteTemplater';
+import MRTNoteTemplater, { PlayerCast, PlayerCastData } from '../templaters/MRTNoteTemplater';
 import { secondsToMinutesText } from './formatters';
 
-const getEventsWithoutTimeDuplicates = (events: PlayerCastData[]) => {
-  const timePlayerCastMap = new Map<string, PlayerCastData>();
+interface PlayerCastWithTime extends PlayerCast {
+  time: string;
+  timestamp: number;
+}
 
-  events.forEach((event) => {
-    const { time, spells: newSpells } = event;
-    const playerCast = timePlayerCastMap.get(time);
+const getEventsWithoutTimeDuplicates = (events: PlayerCastWithTime[]) => {
+  const playersCastsByTime = events.reduce<Record<string, PlayerCastData>>((accumulator, event) => {
+    const { time, spells: newSpells, sourceName, timestamp } = event;
+    const playersCastsData = accumulator[time];
 
-    if (playerCast) {
-      const { spells, ...rest } = playerCast;
+    if (playersCastsData) {
+      const { playersCasts } = playersCastsData;
+      const playerCasts = playersCasts.find(({ sourceName: name }) => sourceName === name);
 
-      timePlayerCastMap.set(time, { ...rest, spells: [...spells, ...newSpells] });
+      if (playerCasts) {
+        playerCasts.spells = [...playerCasts.spells, ...newSpells];
+      } else {
+        playersCasts.push(event);
+      }
     } else {
-      timePlayerCastMap.set(time, event);
+      accumulator[time] = {
+        time,
+        timestamp,
+        playersCasts: [event],
+      };
     }
-  });
 
-  return Array.from(timePlayerCastMap.values());
+    return accumulator;
+  }, {});
+
+  return Object.values(playersCastsByTime);
 };
 
 export const normalizeEvents = (events: FullEvent[], startTime: number) => {
-  const formattedEvents: PlayerCastData[] = events.map(({ timestamp, source: { type, name }, ability: { guid } }) => {
-    const time = secondsToMinutesText((timestamp - startTime) / 1000);
+  const formattedEvents: PlayerCastWithTime[] = events.map(
+    ({ timestamp, source: { type, name }, ability: { guid } }) => {
+      const time = secondsToMinutesText((timestamp - startTime) / 1000);
 
-    return {
-      time,
-      type,
-      sourceName: name,
-      spells: [guid],
-    };
-  });
+      return {
+        time,
+        timestamp,
+        type,
+        sourceName: name,
+        spells: [guid],
+      };
+    },
+  );
 
-  return getEventsWithoutTimeDuplicates(formattedEvents);
+  const eventsWithoutTimeDuplicates = getEventsWithoutTimeDuplicates(formattedEvents);
+
+  eventsWithoutTimeDuplicates.sort(({ timestamp: timeA }, { timestamp: timeB }) => timeA - timeB);
+
+  return eventsWithoutTimeDuplicates;
 };
 
 export const convertEventsToMRTNote = (bossName: string, events: PlayerCastData[]) => {
   const noteText = events.reduce(
-    (accumulator, playerCast) => accumulator + MRTNoteTemplater.getRow(playerCast.time, [playerCast]),
+    (accumulator, { time, playersCasts }) => accumulator + MRTNoteTemplater.getRow(time, playersCasts),
     '',
   );
 

@@ -17,8 +17,14 @@ const Settings = () => {
     <div>
       <Checkbox
         id="isSpellsPresetEnabled"
-        title="Spells presets"
+        title="Spells preset"
         value={settings.isSpellsPresetEnabled}
+        onChange={handleSettingsChange}
+      />
+      <Checkbox
+        id="isPrettyNoteFormat"
+        title="Pretty note format"
+        value={settings.isPrettyNoteFormat}
         onChange={handleSettingsChange}
       />
       <Checkbox

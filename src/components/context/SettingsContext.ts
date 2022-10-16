@@ -3,6 +3,7 @@ import { createContext, Dispatch, SetStateAction } from 'react';
 export interface Settings {
   isSmartAnalyzing: boolean;
   isSpellsPresetEnabled: boolean;
+  isPrettyNoteFormat: boolean;
 }
 
 interface SettingsContextType {
@@ -13,6 +14,7 @@ interface SettingsContextType {
 export const DEFAULT_SETTINGS: Settings = {
   isSmartAnalyzing: false,
   isSpellsPresetEnabled: true,
+  isPrettyNoteFormat: true,
 };
 
 const defaultContext = {

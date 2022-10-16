@@ -1,17 +1,19 @@
 export enum PriestSpells {
+  DivineHymn = 64843,
+  BoonOfTheAscended = 325013,
+  SpiritShell = 109964,
+  Rapture = 47536,
+  Shadowfiend = 34433,
+
   PowerWordShield = 17,
   PowerWordRadiance = 194509,
   PowerWordSolace = 129250,
   ShadowMend = 186263,
-  BoonOfTheAscended = 325013,
   AscendedBlast = 325283,
-  SpiritShell = 109964,
   Schism = 214621,
   Penance = 47540,
-  Rapture = 47536,
   Evangelism = 246287,
   MindGames = 323673,
-  Shadowfiend = 34433,
 }
 
 export const PRIEST_MAJOR_SPELLS = [
@@ -26,4 +28,5 @@ export const PRIEST_MAJOR_SPELLS = [
   PriestSpells.Evangelism,
   PriestSpells.PowerWordRadiance,
   PriestSpells.MindGames,
+  PriestSpells.DivineHymn,
 ];

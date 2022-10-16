@@ -11,4 +11,18 @@
   p {
     white-space: pre-line;
   }
+
+  &__text {
+    margin-top: 8px;
+  }
+
+  &__time {
+    color: #ffed88;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
 }

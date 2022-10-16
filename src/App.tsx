@@ -3,7 +3,7 @@ import { ChangeEvent, useState } from 'react';
 
 import PlayersList from './components/PlayersList';
 import { parseReportUrl } from './utils/parseReportUrl';
-import CastsSequence from './components/CastsSequence';
+import Casts from './components/Casts';
 import { DurationUnits, getFightDuration } from './utils/getFightDuration';
 import { secondsToMinutesText } from './utils/formatters';
 import { REPORT_FIGHT, ReportFight } from './graphql/queries/reportFight';
@@ -43,16 +43,6 @@ const App = () => {
     });
   };
 
-  const handlePlayerClick = (player: Player) => {
-    const { id: newPlayerId } = player;
-
-    setSelectedPlayers((prevSelectedPlayersIds) =>
-      prevSelectedPlayersIds.find(({ id }) => newPlayerId === id)
-        ? prevSelectedPlayersIds.filter(({ id }) => id !== newPlayerId)
-        : [...prevSelectedPlayersIds, player],
-    );
-  };
-
   const handleInputChange = ({ target: { value } }: ChangeEvent<HTMLInputElement>) => {
     setReportLink(value);
   };
@@ -88,20 +78,18 @@ const App = () => {
           <Settings />
         </header>
         <div className="main-block">
-          <PlayersList selectedPlayers={selectedPlayers} onClick={handlePlayerClick} playersDetails={playersDetails} />
-          <div className="casts">
-            {selectedPlayers.map(({ id, type }) => (
-              <CastsSequence
-                key={id}
-                playerId={id}
-                sourceType={type}
+          <PlayersList onSubmit={setSelectedPlayers} playersDetails={playersDetails} />
+          <div className="casts-container">
+            {selectedPlayers.length > 0 && (
+              <Casts
+                players={selectedPlayers}
                 fightId={fightId}
                 bossName={name}
                 code={code}
                 startTime={startTime}
                 endTime={endTime}
               />
-            ))}
+            )}
           </div>
         </div>
       </main>

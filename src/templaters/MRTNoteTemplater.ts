@@ -1,12 +1,17 @@
 import { SourceTypes } from '../types/source';
 import { CLASSES_CONFIG } from '../configs/classesConfig';
 
-export interface PlayerCastData {
+export interface PlayerCast {
   type: SourceTypes;
-  time: string;
   spells: number[];
   text?: string;
   sourceName: string;
+}
+
+export interface PlayerCastData {
+  time: string;
+  timestamp: number;
+  playersCasts: PlayerCast[];
 }
 
 /**
@@ -39,7 +44,7 @@ const MRTNoteTemplater = {
     return `${this.getColoredText(color, name)}`;
   },
 
-  getRow(minutesText: string, players: PlayerCastData[]) {
+  getRow(minutesText: string, players: PlayerCast[]) {
     const playersCasts = players.reduce((accumulator, { spells, sourceName, type, text }, index) => {
       const isLastCast = players.length - 1 === index;
       const playersSeparator = isLastCast ? '' : '|';

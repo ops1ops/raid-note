@@ -1,10 +1,11 @@
 import { FullEvent } from '../../types/events';
 import { PriestSpells } from '../../spells/priest';
-import { PlayerCastData } from '../../templaters/MRTNoteTemplater';
+import { PlayerCast } from '../../templaters/MRTNoteTemplater';
 import { secondsToMinutesText } from '../../utils/formatters';
 import { RAMP_BURST_VARIANTS, TIME_TO_PREPARE_RAMP_S } from './constants';
 
-interface PlayerCastWithTimestamp extends PlayerCastData {
+interface PlayerCastWithTimestamp extends PlayerCast {
+  time: string;
   timestamp: number;
 }
 
